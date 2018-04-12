@@ -19,7 +19,7 @@ export default class LogsDialog extends Component {
     let message = `checkpoint: ${log.checkpoint}\nstart: ${log.start}\nend: ${log.end}\nlogsProcessed: ${log.logsProcessed}\n`;
 
     if (log.error) {
-      message += `error: ${JSON.stringify(log.error)}\n`
+      message += `error: ${JSON.stringify(log.error)}\n`;
     }
 
     return (

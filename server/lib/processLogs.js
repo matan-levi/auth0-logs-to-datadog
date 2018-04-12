@@ -1,8 +1,8 @@
 const async = require('async');
 const moment = require('moment');
 const loggingTools = require('auth0-log-extension-tools');
-const config = require('../lib/config');
-const logger = require('../lib/logger');
+const config = require('./config');
+const logger = require('./logger');
 
 module.exports = (storage) =>
   (req, res, next) => {
@@ -56,7 +56,7 @@ module.exports = (storage) =>
       const end = current.getTime();
       const start = end - 86400000;
       auth0logger.getReport(start, end)
-        .then(report => slack.send(report, report.checkpoint))
+        .then((report) => slack.send(report, report.checkpoint))
         .then(() => storage.read())
         .then((data) => {
           data.lastReportDate = lastReportDate;
@@ -73,12 +73,12 @@ module.exports = (storage) =>
           if (data.lastReportDate !== now && new Date().getHours() >= reportTime) {
             sendDailyReport(now);
           }
-        })
+        });
     };
 
     return auth0logger
       .run(onLogsReceived)
-      .then(result => {
+      .then((result) => {
         if (result && result.status && result.status.error) {
           slack.send(result.status, result.checkpoint);
         } else if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
@@ -87,7 +87,7 @@ module.exports = (storage) =>
         checkReportTime();
         res.json(result);
       })
-      .catch(err => {
+      .catch((err) => {
         slack.send({ error: err, logsProcessed: 0 }, null);
         checkReportTime();
         next(err);

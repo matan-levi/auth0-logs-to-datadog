@@ -17,8 +17,8 @@ module.exports = (configProvider, storageProvider) => {
   config.setProvider(configProvider);
 
   const storage = storageProvider
-    ? new tools.WebtaskStorageContext(storageProvider, {force: 1})
-    : new tools.FileStorageContext(path.join(__dirname, './data.json'), {mergeWrites: true});
+    ? new tools.WebtaskStorageContext(storageProvider, { force: 1 })
+    : new tools.FileStorageContext(path.join(__dirname, './data.json'), { mergeWrites: true });
 
   const app = new Express();
   app.use(morgan(':method :url :status :response-time ms - :res[content-length]', {
@@ -34,8 +34,14 @@ module.exports = (configProvider, storageProvider) => {
 
       return middleware(req, res, next);
     };
+
   app.use(prepareBody(bodyParser.json()));
-  app.use(prepareBody(bodyParser.urlencoded({extended: false})));
+  app.use(prepareBody(bodyParser.urlencoded({ extended: false })));
+
+  app.use('/meta', meta());
+  app.use('/.extensions', hooks());
+
+  app.use(processLogs(storage));
 
   app.use(expressTools.routes.dashboardAdmins({
     secret: config('EXTENSION_SECRET'),
@@ -48,12 +54,8 @@ module.exports = (configProvider, storageProvider) => {
     sessionStorageKey: 'logs-to-datadog:apiToken'
   }));
 
-  app.use('/meta', meta());
-  app.use('/.extensions', hooks());
-
   app.use('/app', Express.static(path.join(__dirname, '../dist')));
 
-  app.use(processLogs(storage));
   app.use('/', routes(storage));
 
   // Generic error handler.
