@@ -16,9 +16,12 @@ The extension can be installed from within the [Extensions Gallery](https://mana
 To run the extension locally (in development mode) you can run the following commands:
 
 ```bash
-yarn install --ignore-engines
+yarn install
+yarn build
 yarn serve:dev
 ```
+
+**Note**: If the install fails, you will probably need to add the `--ignore-engines` flag as there is one dependency that requires Node 6.x
 
 ## Usage
 

@@ -2,7 +2,7 @@ version: '2.0'
 jobs:
   build:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:6
     working_directory: ~/auth0-logs-to-datadog
     steps:
       - checkout
@@ -10,11 +10,14 @@ jobs:
           key: dependencies-{{ checksum "package.json" }}
       - run:
           name: Install dependencies
-          command: yarn install --ignore-engines
+          command: yarn install
       - save_cache:
           key: dependencies-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
-          name: Build bundles
+          name: Check code formatting
+          command: yarn lint:js
+      - run:
+          name: Build client and server bundles
           command: yarn build
