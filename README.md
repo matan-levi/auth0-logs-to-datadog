@@ -1,12 +1,16 @@
 # Auth0 - Logs to DataDog
 
-[![Auth0 Extensions](http://cdn.auth0.com/extensions/assets/badge.svg)](https://sandbox.it.auth0.com/api/run/auth0-extensions/extensions-badge?webtask_no_cache=1)
-
 This extension will take all of your Auth0 logs and export them to [DataDog](https://www.datadoghq.com).
+
+[![CircleCI](https://circleci.com/gh/BetaProjectWave/auth0-logs-to-datadog.svg?style=svg)](https://circleci.com/gh/BetaProjectWave/auth0-logs-to-datadog)
+[![codecov](https://codecov.io/gh/BetaProjectWave/auth0-logs-to-datadog/branch/master/graph/badge.svg)](https://codecov.io/gh/BetaProjectWave/auth0-logs-to-datadog)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b60ef9948cea43cebea99dc8b0c1721e)](https://www.codacy.com/app/BetaProjectWave/auth0-logs-to-datadog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BetaProjectWave/auth0-logs-to-datadog&amp;utm_campaign=Badge_Grade)
 
 ## Installation
 
 The extension can be installed from within the [Extensions Gallery](https://manage.auth0.com/#/extensions).
+
+[![Auth0 Extensions](http://cdn.auth0.com/extensions/assets/badge.svg)](https://sandbox.it.auth0.com/api/run/auth0-extensions/extensions-badge?webtask_no_cache=1)
 
 ## Local Development
 

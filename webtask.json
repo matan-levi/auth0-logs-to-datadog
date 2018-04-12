@@ -10,7 +10,7 @@
   "initialUrlPath": "/login",
   "repository": "https://github.com/BetaProjectWave/auth0-logs-to-datadog",
   "docsUrl": "https://github.com/BetaProjectWave/auth0-logs-to-datadog#readme",
-  "logoUrl": "https://datadog-prod.imgix.net/img/press-kit-11.png",
+  "logoUrl": "https://www.getpostman.com/img/v2/integrations/datadog-logo.png",
   "keywords": [
     "auth0",
     "extension",
