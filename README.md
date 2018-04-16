@@ -13,7 +13,7 @@ The extension can be installed from within the [Extensions Gallery](https://mana
 
 ## Local Development
 
-To run the extension locally (in development mode) you can run the following commands:
+To install and run the extension locally (in development mode) you can run the following commands:
 
 ```bash
 yarn install
@@ -22,6 +22,31 @@ yarn serve:dev
 ```
 
 **Note**: If the install fails, you will probably need to add the `--ignore-engines` flag as there is one dependency that requires Node 6.x
+
+## Deploy to webtask.io
+
+If you haven't configured Webtask on your machine run this first:
+
+```bash
+npm install -g wt-cli
+wt init
+```
+
+If you want to deploy to Webtask you have to run:
+
+```bash
+wt cron create \
+    --name auth0-logs-to-datadog \
+    --secret AUTH0_DOMAIN="YOUR_AUTH0_DOMAIN" \
+    --secret AUTH0_GLOBAL_CLIENT_ID="YOUR_AUTH0_GLOBAL_CLIENT_ID" \
+    --secret AUTH0_GLOBAL_CLIENT_SECRET="YOUR_AUTH0_GLOBAL_CLIENT_SECRET" \
+    --secret LOG_LEVEL="1" \
+    --secret LOG_TYPES="s,f" \
+    --secret DATADOG_API_KEY="YOUR_DATADOG_API_KEY" \
+    --schedule "*/5 * * * *" \
+    build/bundle.js
+```
+
 
 ## Usage
 
