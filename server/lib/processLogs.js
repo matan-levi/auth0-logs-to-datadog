@@ -1,10 +1,9 @@
-const async = require('async');
 const moment = require('moment');
 const loggingTools = require('auth0-log-extension-tools');
 const config = require('./config');
 const logger = require('./logger');
 
-module.exports = (storage) =>
+module.exports = storage =>
   (req, res, next) => {
     const wtBody = (req.webtaskContext && req.webtaskContext.body) || req.body || {};
     const wtHead = (req.webtaskContext && req.webtaskContext.headers) || {};
@@ -22,6 +21,8 @@ module.exports = (storage) =>
       logger.info(`Sending ${logs.length} logs to DataDog.`);
 
       // TODO Send logs to DataDog
+
+      return callback();
     };
 
     const slack = new loggingTools.reporters.SlackReporter({
@@ -56,9 +57,10 @@ module.exports = (storage) =>
       const end = current.getTime();
       const start = end - 86400000;
       auth0logger.getReport(start, end)
-        .then((report) => slack.send(report, report.checkpoint))
+        .then(report => slack.send(report, report.checkpoint))
         .then(() => storage.read())
-        .then((data) => {
+        .then((result) => {
+          const data = result;
           data.lastReportDate = lastReportDate;
           return storage.write(data);
         });

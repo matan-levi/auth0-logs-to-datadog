@@ -16,5 +16,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
+          name: Check code formatting
+          command: yarn lint:js
+      - run:
           name: Build client and server bundles
           command: yarn build

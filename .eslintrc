@@ -1,13 +1,30 @@
 {
-  "plugins": ["import"],
+  "parser": "babel-eslint",
+  "plugins": [
+    "import",
+    "react",
+    "jsx-a11y"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "auth0"
+  ],
   "parserOptions": {
+    "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
+      "experimentalObjectRestSpread": true,
+      "jsx": true
     }
   },
   "env": {
     "es6": true,
-    "node": true
+    "browser": true
+  },
+  "rules": {
+    "max-len": ["error", 160],
+    "no-shadow": 0,
+    "jsx-a11y/href-no-hash": 0
   }
 }
