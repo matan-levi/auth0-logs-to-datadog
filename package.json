@@ -21,7 +21,7 @@
     "url": "https://github.com/BetaProjectWave/auth0-logs-to-datadog/issues"
   },
   "license": "MIT",
-  "author": "Paul Pop <paulpop88@gmail.com>",
+  "author": "Paul Pop <ppop@and.digital>",
   "homepage": "https://github.com/BetaProjectWave/auth0-logs-to-datadog#readme",
   "auth0-extension": {
     "externals": [

@@ -82,7 +82,7 @@ So, for example, if I want to filter on a few events I would set the `LOG_TYPES`
 
 ## Author
 
-[Project Wave](projectwave.io)
+Paul Pop <ppop@and.digital>
 
 ## Issue Reporting
 
