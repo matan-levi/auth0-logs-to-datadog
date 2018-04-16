@@ -1,3 +1,4 @@
+const url = require('url');
 const path = require('path');
 const morgan = require('morgan');
 const Express = require('express');
@@ -24,7 +25,7 @@ module.exports = (configProvider, storageProvider) => {
     stream: logger.stream
   }));
 
-  const prepareBody = middleware =>
+  const prepareBody = (middleware) =>
     (req, res, next) => {
       if (req.webtaskContext && req.webtaskContext.body) {
         req.body = req.webtaskContext.body;

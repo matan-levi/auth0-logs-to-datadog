@@ -24,7 +24,6 @@
   },
   "rules": {
     "max-len": ["error", 160],
-    "no-shadow": 0,
-    "jsx-a11y/href-no-hash": 0
+    "no-shadow": 0
   }
 }

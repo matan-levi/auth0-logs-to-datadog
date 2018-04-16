@@ -1,9 +1,10 @@
+const async = require('async');
 const moment = require('moment');
 const loggingTools = require('auth0-log-extension-tools');
-const config = require('./config');
-const logger = require('./logger');
+const config = require('../lib/config');
+const logger = require('../lib/logger');
 
-module.exports = storage =>
+module.exports = (storage) =>
   (req, res, next) => {
     const wtBody = (req.webtaskContext && req.webtaskContext.body) || req.body || {};
     const wtHead = (req.webtaskContext && req.webtaskContext.headers) || {};
@@ -35,7 +36,7 @@ module.exports = storage =>
       domain: config('AUTH0_DOMAIN'),
       clientId: config('AUTH0_CLIENT_ID'),
       clientSecret: config('AUTH0_CLIENT_SECRET'),
-      batchSize: config('BATCH_SIZE'),
+      batchSize: parseInt(config('BATCH_SIZE'), 10),
       startFrom: config('START_FROM'),
       logLevel: config('LOG_LEVEL'),
       logTypes: config('LOG_TYPES')
@@ -59,8 +60,7 @@ module.exports = storage =>
       auth0logger.getReport(start, end)
         .then(report => slack.send(report, report.checkpoint))
         .then(() => storage.read())
-        .then((result) => {
-          const data = result;
+        .then((data) => {
           data.lastReportDate = lastReportDate;
           return storage.write(data);
         });
@@ -75,12 +75,12 @@ module.exports = storage =>
           if (data.lastReportDate !== now && new Date().getHours() >= reportTime) {
             sendDailyReport(now);
           }
-        });
+        })
     };
 
     return auth0logger
       .run(onLogsReceived)
-      .then((result) => {
+      .then(result => {
         if (result && result.status && result.status.error) {
           slack.send(result.status, result.checkpoint);
         } else if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
@@ -89,7 +89,7 @@ module.exports = storage =>
         checkReportTime();
         res.json(result);
       })
-      .catch((err) => {
+      .catch(err => {
         slack.send({ error: err, logsProcessed: 0 }, null);
         checkReportTime();
         next(err);

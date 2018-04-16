@@ -13,9 +13,7 @@
   "logoUrl": "https://www.getpostman.com/img/v2/integrations/datadog-logo.png",
   "keywords": [
     "auth0",
-    "extension",
-    "logs",
-    "datadog"
+    "extension"
   ],
   "auth0": {
     "createClient": true,
@@ -23,14 +21,14 @@
     "scopes": "read:logs delete:clients"
   },
   "secrets": {
+    "BATCH_SIZE": {
+      "description": "The amount of logs to batch before sending to DataDog. A single cron execution will send multiple batches. Maximum: 100.",
+      "default": 100
+    },
     "DATADOG_API_KEY": {
       "description": "DataDog API key",
       "required": true,
       "type": "password"
-    },
-    "BATCH_SIZE": {
-      "description": "The amount of logs to batch before sending to DataDog. A single cron execution will send multiple batches. Maximum: 100.",
-      "default": 100
     },
     "START_FROM": {
       "description": "Checkpoint ID of log to start from."

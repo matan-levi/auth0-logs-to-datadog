@@ -7,7 +7,7 @@ import rootReducer from '../reducers';
 import normalizeErrorMiddleware from '../middlewares/normalizeErrorMiddleware';
 import DevTools from '../containers/DevTools';
 
-const nextRootReducer = (process.env.NODE_ENV !== 'production' && module.hot) ? require('../reducers') : null;
+const nextRootReducer = ((process.env.NODE_ENV !== 'production' && module.hot)) ? require('../reducers') : null;
 
 export default function configureStore() {
   const pipeline = [
