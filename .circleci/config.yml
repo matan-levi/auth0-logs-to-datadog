@@ -22,9 +22,9 @@ jobs:
           key: dependencies-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      #- run:
-      #    name: Check code formatting
-      #    command: yarn lint:js
+      - run:
+          name: Check code formatting
+          command: yarn lint:js
       - run:
           name: Build client and server bundles
           command: yarn build
@@ -58,12 +58,11 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - build:
-          context: default
+      - build
       - deploy:
           context: default
           requires:
             - build
-          #filters:
-          #  branches:
-          #    only: master
+          filters:
+            branches:
+              only: master

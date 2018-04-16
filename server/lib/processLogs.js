@@ -1,4 +1,3 @@
-const async = require('async');
 const moment = require('moment');
 const loggingTools = require('auth0-log-extension-tools');
 const config = require('../lib/config');
@@ -61,7 +60,7 @@ module.exports = (storage) =>
         .then(report => slack.send(report, report.checkpoint))
         .then(() => storage.read())
         .then((data) => {
-          data.lastReportDate = lastReportDate;
+          data.lastReportDate = lastReportDate; // eslint-disable-line no-param-reassign
           return storage.write(data);
         });
     };
@@ -75,7 +74,7 @@ module.exports = (storage) =>
           if (data.lastReportDate !== now && new Date().getHours() >= reportTime) {
             sendDailyReport(now);
           }
-        })
+        });
     };
 
     return auth0logger
