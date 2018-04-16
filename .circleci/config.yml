@@ -1,9 +1,16 @@
-version: '2.0'
+defaults: &default
+  working_directory: ~/auth0-logs-to-datadog
+  docker:
+    - image: projectwave/nodejs-awscli
+      environment:
+        AWS_DEFAULT_REGION: eu-west-2
+
+version: 2
 jobs:
   build:
+    <<: *default
     docker:
       - image: circleci/node:6
-    working_directory: ~/auth0-logs-to-datadog
     steps:
       - checkout
       - restore_cache:
@@ -15,9 +22,48 @@ jobs:
           key: dependencies-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: Check code formatting
-          command: yarn lint:js
+      #- run:
+      #    name: Check code formatting
+      #    command: yarn lint:js
       - run:
           name: Build client and server bundles
           command: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist/*.js
+            - dist/*.css
+            - dist/*.map
+            - dist/*.json
+
+  deploy:
+    <<: *default
+    docker:
+      - image: projectwave/nodejs-awscli
+        environment:
+          AWS_DEFAULT_REGION: eu-west-2
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Set AWS variables in the environment
+          command: |
+            echo 'export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_DEV' >> $BASH_ENV
+            echo 'export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY_DEV' >> $BASH_ENV
+      - run:
+          name: Deploying assets to S3
+          command: aws s3 sync --delete ./dist s3://config.dev.astoapp.co.uk/assets/auth0
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build:
+          context: default
+      - deploy:
+          context: default
+          requires:
+            - build
+          #filters:
+          #  branches:
+          #    only: master
