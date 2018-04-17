@@ -1,7 +1,10 @@
+const async = require('async');
 const moment = require('moment');
 const loggingTools = require('auth0-log-extension-tools');
-const config = require('../lib/config');
-const logger = require('../lib/logger');
+
+const config = require('./config');
+const logger = require('./logger');
+const DataDog = require('./datadog');
 
 module.exports = (storage) =>
   (req, res, next) => {
@@ -13,16 +16,26 @@ module.exports = (storage) =>
       return next();
     }
 
-    const onLogsReceived = (logs, callback) => {
+    const datadog = new DataDog(config('DATADOG_API_KEY'));
+
+    const onLogsReceived = (logs, callback) => { // eslint-disable-line consistent-return
       if (!logs || !logs.length) {
         return callback();
       }
 
       logger.info(`Sending ${logs.length} logs to DataDog.`);
 
-      // TODO Send logs to DataDog
+      async.eachLimit(logs, 10, (log, cb) => {
+        datadog.log(log, cb);
+      }, (err) => {
+        if (err) {
+          logger.error('Error occurred when sending logs to DataDog', err);
+          return callback(err);
+        }
 
-      return callback();
+        logger.info('Upload complete.');
+        return callback();
+      });
     };
 
     const slack = new loggingTools.reporters.SlackReporter({
@@ -59,7 +72,7 @@ module.exports = (storage) =>
       auth0logger.getReport(start, end)
         .then(report => slack.send(report, report.checkpoint))
         .then(() => storage.read())
-        .then((data) => {
+        .then(data => {
           data.lastReportDate = lastReportDate; // eslint-disable-line no-param-reassign
           return storage.write(data);
         });
@@ -67,7 +80,7 @@ module.exports = (storage) =>
 
     const checkReportTime = () => {
       storage.read()
-        .then((data) => {
+        .then(data => {
           const now = moment().format('DD-MM-YYYY');
           const reportTime = config('DAILY_REPORT_TIME') || 16;
 

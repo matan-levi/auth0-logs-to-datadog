@@ -7,25 +7,51 @@ This extension will take all of your Auth0 logs and export them to [DataDog](htt
 
 ## Installation
 
-The extension can be installed from within the [Extensions Gallery](https://manage.auth0.com/#/extensions).
+This custom extension can be installed from the [Extensions Gallery](https://manage.auth0.com/#/extensions).
 
 [![Auth0 Extensions](http://cdn.auth0.com/extensions/assets/badge.svg)](https://sandbox.it.auth0.com/api/run/auth0-extensions/extensions-badge?webtask_no_cache=1)
 
-## Local Development
+### Assets
 
-To install and run the extension locally (in development mode) you can run the following commands:
+Because this is not an official extension, the assets are not hosted in the Auth0 CDN but in a privately owned S3 bucket
+fronted by CloudFront. The CI process will publish the latest versioned changes there but in case you need to use your own
+hosting, please adjust the lines marked with TODO in [server/routes/html.js](server/routes/html.js).
+
+## Configure Webtask
+
+If you haven't configured Webtask on your machine run this first:
 
 ```bash
-yarn install
-yarn build
-yarn serve:dev
+npm install -g wt-cli
+wt init
 ```
 
-**Note**: If the install fails, you will probably need to add the `--ignore-engines` flag as there is one dependency that requires Node 6.x
+## Deploy to Webtask.io
+
+To run it on a schedule (run every 5 minutes for example):
+
+```bash
+yarn install && yarn build
+wt cron create \
+    --name auth0-logs-to-datadog \
+    --secret AUTH0_DOMAIN="YOUR_AUTH0_DOMAIN" \
+    --secret AUTH0_GLOBAL_CLIENT_ID="YOUR_AUTH0_GLOBAL_CLIENT_ID" \
+    --secret AUTH0_GLOBAL_CLIENT_SECRET="YOUR_AUTH0_GLOBAL_CLIENT_SECRET" \
+    --secret DATADOG_API_KEY="YOUR_DATADOG_API_KEY" \
+    --schedule "*/5 * * * *" \
+    build/bundle.js
+```
+
+The following settings are optional:
+
+ - `LOG_LEVEL`: This allows you to specify the log level of events that need to be sent.
+ - `LOG_TYPES`: If you only want to send events with a specific type (eg: failed logins). This needs to be a comma separated list.
+
+> You can get your Global Client Id/Secret here: https://auth0.com/docs/api/v2
 
 ## Usage
 
-Go to the `logs` section of your [DataDog](https://app.datadoghq.com/logs) account and filter by source `auth0`.
+Go to the `logs` section of your [DataDog](https://app.datadoghq.com/logs) account and filter by `source: auth0`.
 
 ## Filters
 
@@ -80,13 +106,13 @@ The `LOG_TYPES` filter can be set to:
 
 So, for example, if I want to filter on a few events I would set the `LOG_TYPES` filter to: `sce,fce,scu,fcu`.
 
-## Author
-
-Paul Pop <ppop@and.digital>
-
 ## Issue Reporting
 
 If you have found a bug or if you have a feature request, please report them at this repository issues section.
+
+## Author
+
+Paul Pop <ppop@and.digital>
 
 ## License
 

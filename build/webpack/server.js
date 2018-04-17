@@ -26,20 +26,18 @@ const options = {
     aggregateTimeout: 300,
     poll: 1000
   },
-
   stats: { colors: true },
   headers: { 'Access-Control-Allow-Origin': '*' }
 };
 
 new WebpackDevServer(webpack(config), options)
-  .listen(3000, 'localhost',
-    (err) => {
-      if (err) {
-        logger.error(err);
-      } else {
-        logger.info('Development server listening on: http://localhost:3000');
+  .listen(3000, 'localhost', (err) => {
+    if (err) {
+      logger.error(err);
+    } else {
+      logger.info('Development server listening on: http://localhost:3000');
 
-        // Start the actual webserver.
-        require('../../index');
-      }
-    });
+      // Start the actual webserver.
+      require('../../index');
+    }
+  });

@@ -1,5 +1,13 @@
-defaults: &default
+defaults: &workdir
   working_directory: ~/auth0-logs-to-datadog
+
+defaults: &node
+  <<: *workdir
+  docker:
+    - image: circleci/node:6
+
+defaults: &aws
+  <<: *workdir
   docker:
     - image: projectwave/nodejs-awscli
       environment:
@@ -8,9 +16,7 @@ defaults: &default
 version: 2
 jobs:
   build:
-    <<: *default
-    docker:
-      - image: circleci/node:6
+    <<: *node
     steps:
       - checkout
       - restore_cache:
@@ -36,12 +42,8 @@ jobs:
             - dist/*.map
             - dist/*.json
 
-  deploy:
-    <<: *default
-    docker:
-      - image: projectwave/nodejs-awscli
-        environment:
-          AWS_DEFAULT_REGION: eu-west-2
+  assets:
+    <<: *aws
     steps:
       - attach_workspace:
           at: .
@@ -54,15 +56,30 @@ jobs:
           name: Deploying assets to S3
           command: aws s3 sync --delete ./dist s3://config.dev.astoapp.co.uk/assets/auth0
 
+  tag:
+    <<: *node
+    steps:
+      - checkout
+      - run:
+          name: Create and push git tag
+          command: yarn run tag
+
 workflows:
   version: 2
-  deploy:
+  release:
     jobs:
       - build
-      - deploy:
+      - assets:
           context: default
           requires:
             - build
+          filters:
+            branches:
+              only: master
+      - tag:
+          context: default
+          requires:
+            - assets
           filters:
             branches:
               only: master
