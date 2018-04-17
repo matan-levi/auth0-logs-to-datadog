@@ -9,7 +9,7 @@ defaults: &node
 defaults: &aws
   <<: *workdir
   docker:
-    - image: infrastructureascode/aws-cli:1.15.4
+    - image: projectwave/nodejs-awscli:latest
       environment:
         AWS_DEFAULT_REGION: eu-west-2
         BUCKET_NAME: config.dev.astoapp.co.uk
