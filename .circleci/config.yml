@@ -9,9 +9,10 @@ defaults: &node
 defaults: &aws
   <<: *workdir
   docker:
-    - image: projectwave/nodejs-awscli
+    - image: infrastructureascode/aws-cli:1.15.4
       environment:
         AWS_DEFAULT_REGION: eu-west-2
+        BUCKET_NAME: config.dev.astoapp.co.uk
 
 version: 2
 jobs:
@@ -54,7 +55,7 @@ jobs:
             echo 'export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY_DEV' >> $BASH_ENV
       - run:
           name: Deploying assets to S3
-          command: aws s3 sync --delete ./dist s3://config.dev.astoapp.co.uk/assets/auth0
+          command: aws s3 sync --delete ./dist s3://$BUCKET_NAME/assets/auth0
 
   tag:
     <<: *node
@@ -73,13 +74,13 @@ workflows:
           context: default
           requires:
             - build
-          filters:
-            branches:
-              only: master
+          #filters:
+          #  branches:
+          #    only: master
       - tag:
           context: default
           requires:
             - assets
-          filters:
-            branches:
-              only: master
+          #filters:
+          #  branches:
+          #    only: master
