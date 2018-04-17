@@ -41,7 +41,6 @@ jobs:
             - dist/*.js
             - dist/*.css
             - dist/*.map
-            - dist/*.json
 
   assets:
     <<: *aws
@@ -55,7 +54,7 @@ jobs:
             echo 'export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY_DEV' >> $BASH_ENV
       - run:
           name: Deploying assets to S3
-          command: aws s3 sync --delete ./dist s3://$BUCKET_NAME/assets/auth0
+          command: aws s3 sync ./dist s3://$BUCKET_NAME/assets/auth0
 
   tag:
     <<: *node
