@@ -1,7 +1,7 @@
 {
   "title": "Auth0 logs to DataDog",
   "name": "auth0-logs-to-datadog",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Paul Pop <ppop@and.digital>",
   "description": "This extension will export your Auth0 logs to DataDog",
   "type": "cron",
@@ -31,6 +31,10 @@
       "description": "DataDog API key",
       "required": true,
       "type": "password"
+    },
+    "DATADOG_CUSTOM_TAGS": {
+      "description": "Custom tags to send to DataDog",
+      "example": "key1:value1,key2:value2"
     },
     "START_FROM": {
       "description": "Checkpoint ID of log to start from."

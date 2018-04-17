@@ -1,21 +1,30 @@
 const tls = require('tls');
 
+const config = {
+  host: 'intake.logs.datadoghq.com',
+  port: 10516
+};
+
 const metadata = {
+  ddsourcecategory: 'external',
   ddsource: 'auth0'
 };
 
-let config = {};
-
-function DataDog(apiKey) {
+function DataDog(apiKey, customTags) {
   if (!apiKey) {
     throw new Error('API Key is required for DataDog.');
   }
 
-  config = {
-    host: 'intake.logs.datadoghq.com',
-    port: 10516,
-    apiKey
-  };
+  config.apiKey = apiKey;
+
+  if (customTags) {
+    const matchedTags = customTags.match(/([^:|^,\W]+):([^,|^\W]+)/g);
+    if (!matchedTags || matchedTags.length < 1) {
+      throw new Error('Custom tags are not formatted properly. Format is comma-separated key:value.');
+    }
+
+    metadata.ddtags = customTags;
+  }
 }
 
 DataDog.prototype.log = (log, callback) => {
