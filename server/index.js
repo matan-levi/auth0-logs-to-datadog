@@ -24,7 +24,7 @@ module.exports = (configProvider, storageProvider) => {
     stream: logger.stream
   }));
 
-  const prepareBody = (middleware) =>
+  const prepareBody = middleware =>
     (req, res, next) => {
       if (req.webtaskContext && req.webtaskContext.body) {
         req.body = req.webtaskContext.body; // eslint-disable-line no-param-reassign

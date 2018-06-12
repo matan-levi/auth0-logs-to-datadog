@@ -44,8 +44,6 @@ export function loadCredentials() {
           user: decodedToken
         }
       });
-
-      return;
     }
   };
 }

@@ -23,6 +23,8 @@
     "browser": true
   },
   "rules": {
-    "max-len": ["error", 160]
+    "max-len": ["error", 160],
+    "jsx-a11y/href-no-hash": "off",
+    "import/extensions": "off"
   }
 }

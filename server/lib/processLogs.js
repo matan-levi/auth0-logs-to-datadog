@@ -6,7 +6,7 @@ const config = require('./config');
 const logger = require('./logger');
 const DataDog = require('./datadog');
 
-module.exports = (storage) =>
+module.exports = storage =>
   (req, res, next) => {
     const wtBody = (req.webtaskContext && req.webtaskContext.body) || req.body || {};
     const wtHead = (req.webtaskContext && req.webtaskContext.headers) || {};
@@ -72,7 +72,7 @@ module.exports = (storage) =>
       auth0logger.getReport(start, end)
         .then(report => slack.send(report, report.checkpoint))
         .then(() => storage.read())
-        .then(data => {
+        .then((data) => {
           data.lastReportDate = lastReportDate; // eslint-disable-line no-param-reassign
           return storage.write(data);
         });
@@ -80,7 +80,7 @@ module.exports = (storage) =>
 
     const checkReportTime = () => {
       storage.read()
-        .then(data => {
+        .then((data) => {
           const now = moment().format('DD-MM-YYYY');
           const reportTime = config('DAILY_REPORT_TIME') || 16;
 
@@ -92,7 +92,7 @@ module.exports = (storage) =>
 
     return auth0logger
       .run(onLogsReceived)
-      .then(result => {
+      .then((result) => {
         if (result && result.status && result.status.error) {
           slack.send(result.status, result.checkpoint);
         } else if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
@@ -101,7 +101,7 @@ module.exports = (storage) =>
         checkReportTime();
         res.json(result);
       })
-      .catch(err => {
+      .catch((err) => {
         slack.send({ error: err, logsProcessed: 0 }, null);
         checkReportTime();
         next(err);
