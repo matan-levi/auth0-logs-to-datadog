@@ -13,11 +13,29 @@ This custom extension can be installed from the [Extensions Gallery](https://man
 
 ### Assets
 
-Because this is not an official extension, the assets are not hosted in the Auth0 CDN but in a privately owned S3 bucket
-fronted by CloudFront. The CI process will publish the latest versioned changes there but in case you need to use your own
-hosting, please adjust the lines marked with TODO in [server/routes/html.js](server/routes/html.js).
+Because this is not an official extension, the assets are not hosted in the Auth0 CDN but on GitHub Pages.
 
-## Configure Webtask
+## Usage
+
+Go to the `logs` section of your [DataDog](https://app.datadoghq.com/logs) account and filter by `source: auth0`.
+
+## Build
+
+In order to build the extension locally you have to have NodeJS 6+ installed and run:
+
+To install dependencies:
+
+```bash
+yarn install
+```
+
+To bundle the app:
+
+```bash
+yarn build
+```
+
+## Webtask
 
 If you haven't configured Webtask on your machine run this first:
 
@@ -26,7 +44,7 @@ npm install -g wt-cli
 wt init
 ```
 
-## Deploy to Webtask.io
+### Deploy to Webtask.io
 
 To run it on a schedule (run every 5 minutes for example):
 
@@ -48,10 +66,6 @@ The following settings are optional:
  - `LOG_TYPES`: If you only want to send events with a specific type (eg: failed logins). This needs to be a comma separated list.
 
 > You can get your Global Client Id/Secret here: https://auth0.com/docs/api/v2
-
-## Usage
-
-Go to the `logs` section of your [DataDog](https://app.datadoghq.com/logs) account and filter by `source: auth0`.
 
 ## Filters
 

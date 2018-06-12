@@ -21,8 +21,8 @@ module.exports = () => {
     <link rel="stylesheet" type="text/css" href="https://cdn.auth0.com/styleguide/4.6.13/index.min.css" />
     <% if (assets.style) { %><link rel="stylesheet" type="text/css" href="/app/<%= assets.style %>" /><% } %>
     <% if (assets.version) { %>
-    <!-- TODO: Replace this with your own URL for hosting the assets -->
-    <link rel="stylesheet" type="text/css" href="https://config.dev.astoapp.co.uk/assets/auth0/auth0-logs-to-datadog.ui.<%= assets.version %>.css" />
+    <link rel="stylesheet" type="text/css" 
+      href="https://betaprojectwave.github.io/auth0-logs-to-datadog/dist/auth0-logs-to-datadog.ui.<%= assets.version %>.css" />
     <% } %>
     <% if (assets.customCss) { %><link rel="stylesheet" type="text/css" href="<%= assets.customCss %>" /><% } %>
   </head>
@@ -34,9 +34,10 @@ module.exports = () => {
     <% if (assets.vendors) { %><script type="text/javascript" src="/app/<%= assets.vendors %>"></script><% } %>
     <% if (assets.app) { %><script type="text/javascript" src="/app/<%= assets.app %>"></script><% } %>
     <% if (assets.version) { %>
-    <!-- TODO: Replace this with your own URL for hosting the assets -->
-    <script type="text/javascript" src="https://config.dev.astoapp.co.uk/assets/auth0/auth0-logs-to-datadog.ui.vendors.<%= assets.version %>.js"></script>
-    <script type="text/javascript" src="https://config.dev.astoapp.co.uk/assets/auth0/auth0-logs-to-datadog.ui.<%= assets.version %>.js"></script>
+    <script type="text/javascript" 
+      src="https://betaprojectwave.github.io/auth0-logs-to-datadog/dist/auth0-logs-to-datadog.ui.vendors.<%= assets.version %>.js"></script>
+    <script type="text/javascript" 
+      src="https://betaprojectwave.github.io/auth0-logs-to-datadog/dist/auth0-logs-to-datadog.ui.<%= assets.version %>.js"></script>
     <% } %>
   </body>
   </html>

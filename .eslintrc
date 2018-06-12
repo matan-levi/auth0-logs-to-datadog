@@ -23,7 +23,6 @@
     "browser": true
   },
   "rules": {
-    "max-len": ["error", 160],
-    "no-shadow": 0
+    "max-len": ["error", 160]
   }
 }
