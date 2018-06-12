@@ -1,11 +1,15 @@
 {
   "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react",
-    ["@babel/preset-stage-0", { "decoratorsLegacy": true }]
+    "es2015",
+    "react",
+    "stage-0"
   ],
+  "env": {
+    "development": {
+      "presets": ["react-hmre"]
+    }
+  },
   "plugins": [
-    "@babel/plugin-transform-runtime",
-    "@babel/plugin-proposal-export-default-from"
+    "transform-runtime"
   ]
 }
