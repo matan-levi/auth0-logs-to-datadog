@@ -26,7 +26,7 @@ In order to build the extension locally you have to have NodeJS 6+ installed and
 To install dependencies:
 
 ```bash
-yarn install
+yarn install --ignore-engines
 ```
 
 To bundle the app:
