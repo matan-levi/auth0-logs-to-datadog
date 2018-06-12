@@ -4,9 +4,9 @@ const expressApp = require('./server');
 const config = require('./server/lib/config');
 const logger = require('./server/lib/logger');
 
-const createServer = tools.createServer((cfg, storage) => {
+const createServer = tools.createServer((config, storage) => {
   logger.info('Starting Auth0 Logs to DataDog Extension - Version: ', process.env.CLIENT_VERSION);
-  return expressApp(cfg, storage);
+  return expressApp(config, storage);
 });
 
 module.exports = (context, req, res) => {
