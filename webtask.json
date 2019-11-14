@@ -58,22 +58,6 @@
         }
       ]
     },
-    "DATADOG_SERVER": {
-      "description": "Datadog server HQ. If you are running in EU datadog please change this to EU",
-      "type": "select",
-      "allowMultiple": false,
-      "default": "intake.logs.datadoghq.com",
-      "options": [
-        {
-          "value": "US",
-          "text": "US"
-        },
-        {
-          "value": "EU",
-          "text": "EU"
-        }
-      ]
-     },
     "LOG_LEVEL": {
       "description": "This allows you to specify the log level of events that need to be sent",
       "type": "select",
