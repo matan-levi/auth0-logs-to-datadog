@@ -1,21 +1,26 @@
 const tls = require('tls');
 
-const config = {
-  host: 'intake.logs.datadoghq.com',
-  port: 10516
-};
-
 const metadata = {
   ddsourcecategory: 'external',
   ddsource: 'auth0'
 };
 
-function DataDog(apiKey, customTags) {
+const config = {};
+
+function DataDog(server, apiKey, customTags) {
   if (!apiKey) {
     throw new Error('API Key is required for DataDog.');
   }
 
   config.apiKey = apiKey;
+
+  if (server === 'US') {
+    config.host = 'intake.logs.datadoghq.com';
+    config.port = 10516;
+  } else {
+    config.host = 'tcp-intake.logs.datadoghq.eu';
+    config.port = 443;
+  }
 
   if (customTags) {
     const matchedTags = customTags.match(/([^:|^,\W]+):([^,|^\W]+)/g);

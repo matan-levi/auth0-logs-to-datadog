@@ -1,9 +1,10 @@
-# Auth0 - Logs to DataDog
+# Auth0 - Logs to Datadog
 
 This extension will take all of your Auth0 logs and export them to [DataDog](https://www.datadoghq.com).
 
 [![CircleCI](https://circleci.com/gh/BetaProjectWave/auth0-logs-to-datadog.svg?style=svg)](https://circleci.com/gh/BetaProjectWave/auth0-logs-to-datadog)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b60ef9948cea43cebea99dc8b0c1721e)](https://www.codacy.com/app/BetaProjectWave/auth0-logs-to-datadog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BetaProjectWave/auth0-logs-to-datadog&amp;utm_campaign=Badge_Grade)
+
 
 ## Installation
 
@@ -68,6 +69,11 @@ The following settings are optional:
 > You can get your Global Client Id/Secret here: https://auth0.com/docs/api/v2
 
 ## Filters
+
+The `DATADOG_SERVER` can be set to:
+
+- `US` (default): which will send data to Datadog US servers: intake.logs.datadoghq.com:10516
+- `EU`: which will send data to Datadog EU servers: tcp-intake.logs.datadoghq.eu:443
 
 The `LOG_LEVEL` can be set to (setting it to a value will also send logs of a higher value):
 

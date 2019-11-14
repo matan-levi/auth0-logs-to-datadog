@@ -16,7 +16,7 @@ module.exports = storage =>
       return next();
     }
 
-    const datadog = new DataDog(config('DATADOG_API_KEY'), config('DATADOG_CUSTOM_TAGS'));
+    const datadog = new DataDog(config('DATADOG_SERVER'), config('DATADOG_API_KEY'), config('DATADOG_CUSTOM_TAGS'));
 
     const onLogsReceived = (logs, callback) => { // eslint-disable-line consistent-return
       if (!logs || !logs.length) {
